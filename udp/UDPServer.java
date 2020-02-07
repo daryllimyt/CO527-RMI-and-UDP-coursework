@@ -97,6 +97,14 @@ public class UDPServer {
 
 	public UDPServer(int rp) {
 		// TO-DO: Initialise UDP socket for receiving data
+		System.out.println("Initialising UDP Socket for receiving data...");
+		try {
+			recvSoc = new DatagramSocket(rp);
+		} catch (Exception e) {
+			System.out.println("Error: SocketException");
+			System.out.println("Closing Server...");
+			System.exit(-1);
+		}
 
 		// Done Initialisation
 		System.out.println("UDPServer ready");
@@ -113,6 +121,8 @@ public class UDPServer {
 		recvPort = Integer.parseInt(args[0]);
 
 		// TO-DO: Construct Server object and start it by calling run().
+		UDPServer udp = new UDPServer(recvPort);
+		udp.run();
 	}
 
 }
