@@ -36,11 +36,27 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 
 		RMIServer rmis = null;
 
-		// TO-DO: Initialise Security Manager
+		// Initialise Security Manager
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new RMISecurityManager());
+		}
 
-		// TO-DO: Instantiate the server class
+		// Instantiate the server class
+		try { 
+			rmis = new RMIServer();
+		} catch (RemoteException e) {
+			System.out.println("Error instantiating server class");
+			System.exit(-1);
+		}
 
-		// TO-DO: Bind to RMI registry
+		// Bind to RMI registry
+		try {
+			rebindServer("RMIServer", rmis );
+			System.out.println("Running...");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		} 
 
 	}
 
@@ -49,10 +65,23 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		// TO-DO:
 		// Start / find the registry (hint use LocateRegistry.createRegistry(...)
 		// If we *know* the registry is running we could skip this (eg run rmiregistry in the start script)
+		try {
+			LocateRegistry.createRegistry(8000);
+			Naming.rebind(serverURL, server);
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
 
 		// TO-DO:
 		// Now rebind the server to the registry (rebind replaces any existing servers bound to the serverURL)
 		// Note - Registry.rebind (as returned by createRegistry / getRegistry) does something similar but
 		// expects different things from the URL field.
+		try {
+			Naming.rebind(serverURL, server);
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }
