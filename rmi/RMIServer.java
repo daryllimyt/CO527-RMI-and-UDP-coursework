@@ -22,13 +22,26 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 
 	public void receiveMessage(MessageInfo msg) throws RemoteException {
 
-		// TO-DO: On receipt of first message, initialise the receive buffer
+		// On receipt of first message, initialise the receive buffer
+		if (receivedMessages == null || msg.totalMessages != totalMessages) {
+			totalMessages = msg.totalMessages;
+			receivedMessages = new int[msg.totalMessages];
+		}
+		// Log receipt of the message
+		receivedMessages[msg.messageNum] = 1;
 
-		// TO-DO: Log receipt of the message
+		// If this is the last expected message, then identify any missing messages
+		if (msg.messageNum + 1 == totalMessages) {
+			System.out.println("Reviewing messages...");
+			String s = "Lost packets: ";
+			int count = 0;
+			for (int i = 0; i < totalMessages; i++) {
+				if (receivedMessages[i] != 1) {
+					
+				}
+			}
 
-		// TO-DO: If this is the last expected message, then identify
-		//        any missing messages
-
+		}
 	}
 
 
