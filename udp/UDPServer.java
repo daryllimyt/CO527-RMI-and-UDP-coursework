@@ -92,7 +92,6 @@ public class UDPServer {
 			}
 		}
 
-	}
 
 
 	public UDPServer(int rp) {
@@ -100,7 +99,7 @@ public class UDPServer {
 		System.out.println("Initialising UDP Socket for receiving data...");
 		try {
 			recvSoc = new DatagramSocket(rp);
-		} catch (Exception e) {
+		} catch (SocketException e) {
 			System.out.println("Error: SocketException");
 			System.out.println("Closing Server...");
 			System.exit(-1);
