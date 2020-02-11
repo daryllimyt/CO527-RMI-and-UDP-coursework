@@ -31,7 +31,7 @@ public class UDPServer {
 			pac = new DatagramPacket(pacData, pacSize);
 
 			try {
-				recvSoc.setSoTimeout(30000);
+				recvSoc.setSoTimeout(300000);
 				recvSoc.receive(pac);
 			} catch (SocketTimeoutException e) {
 				System.out.println("Error: Process took longer than 30 seconds");
