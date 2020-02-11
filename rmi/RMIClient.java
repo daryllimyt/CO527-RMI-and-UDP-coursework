@@ -24,16 +24,18 @@ public class RMIClient {
 			System.exit(-1);
 		}
 
-		String urlServer = new String("rmi://" + args[0] + ":" + Integer.toString(1099) + "/RMIServer");
+		String urlServer = new String("Server");
 		int numMessages = Integer.parseInt(args[1]);
 
 		// Initialise Security Manager
-		if (System.getSecurityManager() == null) System.setSecurityManager(new SecurityManager());
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new SecurityManager());
+		}
 
 		try {
 			// Bind to RMIServer
-			// Registry registry = LocateRegistry.getRegistry(args[0], 1099);
-			iRMIServer = (RMIServerI) Naming.lookup(urlServer);
+			Registry registry = LocateRegistry.getRegistry(args[0], 1099);
+			iRMIServer = (RMIServerI) registry.lookup(urlServer);
 
 			// Attempt to send messages the specified number of times
 			for (int i = 0; i < numMessages; i++) {

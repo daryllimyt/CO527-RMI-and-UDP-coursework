@@ -13,11 +13,36 @@ import java.util.Arrays;
 import common.*;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerI {
-
+	
 	private int totalMessages = -1;
 	private int[] receivedMessages;
-
-	public RMIServer() throws RemoteException {
+	
+	public RMIServer() throws RemoteException {}
+	public static void main(String[] args) {
+	
+		RMIServer rmis = null;
+	
+		// Initialise Security Manager
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new SecurityManager());
+		}
+	
+		// Instantiate the server class
+		try {
+			rmis = new RMIServer();
+		} catch (RemoteException e) {
+			System.out.println("Error instantiating server class");
+			System.exit(-1);
+		}
+	
+		// Bind to RMI registry
+		try {
+			rebindServer("Server", rmis );
+			System.out.println("Running...");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		}	
 	}
 
 	public void receiveMessage(MessageInfo msg) throws RemoteException {
@@ -43,43 +68,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 			}
 			if (count == 0) s += "None";
 
-			System.out.println("Total messages sent:\t" + totalMessages);
+			System.out.println("Total messages sent:\t\t" + totalMessages);
 			System.out.println("Total messages received:\t" + (totalMessages - count));
-			System.out.println("Total messages lost:\t" + count);
+			System.out.println("Total messages lost:\t\t" + count);
 			System.out.println(s);
 			System.out.println("Running...");
-
-
 		}
-	}
-
-
-	public static void main(String[] args) {
-
-		RMIServer rmis = null;
-
-		// Initialise Security Manager
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
-
-		// Instantiate the server class
-		try {
-			rmis = new RMIServer();
-		} catch (RemoteException e) {
-			System.out.println("Error instantiating server class");
-			System.exit(-1);
-		}
-
-		// Bind to RMI registry
-		try {
-			rebindServer("RMIServer", rmis );
-			System.out.println("Running...");
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-
 	}
 
 	protected static void rebindServer(String serverURL, RMIServer server) {
@@ -87,6 +81,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		// TO-DO:
 		// Start / find the registry (hint use LocateRegistry.createRegistry(...)
 		// If we *know* the registry is running we could skip this (eg run rmiregistry in the start script)
+		// Now rebind the server to the registry (rebind replaces any existing servers bound to the serverURL)
+		// Note - Registry.rebind (as returned by createRegistry / getRegistry) does something similar but
+		// expects different things from the URL field.
+
 		try {
 			LocateRegistry.createRegistry(1099);
 			Naming.rebind(serverURL, server);
@@ -94,11 +92,5 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
-
-		// TO-DO:
-		// Now rebind the server to the registry (rebind replaces any existing servers bound to the serverURL)
-		// Note - Registry.rebind (as returned by createRegistry / getRegistry) does something similar but
-		// expects different things from the URL field.
-
 	}
 }

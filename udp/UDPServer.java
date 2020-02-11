@@ -25,7 +25,7 @@ public class UDPServer {
 		DatagramPacket 	pac;
 
 		while(!close){
-			pacSize = 3000;
+			pacSize = 10000;
 			pacData = new byte [pacSize];
 
 			pac = new DatagramPacket(pacData, pacSize);
