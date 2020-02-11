@@ -44,11 +44,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 			if (count == 0) s += "None";
 
 			System.out.println("Total messages sent:\t" + totalMessages);
-			System.out.println("Total messages received:\t" + (totalMessages - count);
+			System.out.println("Total messages received:\t" + (totalMessages - count));
 			System.out.println("Total messages lost:\t" + count);
-			System.out.println(str);
+			System.out.println(s);
 			System.out.println("Running...");
-			
+
 
 		}
 	}
@@ -60,7 +60,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 
 		// Initialise Security Manager
 		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new RMISecurityManager());
+			System.setSecurityManager(new SecurityManager());
 		}
 
 		// Instantiate the server class
