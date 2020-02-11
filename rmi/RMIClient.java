@@ -27,24 +27,25 @@ public class RMIClient {
 
 		// Initialise Security Manager
 		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new RMISecurityManager());
+			System.setSecurityManager(new SecurityManager());
 		}
+
 
 
 		try {
 			// Bind to RMIServer
 			iRMIServer = (RMIServerI) Naming.lookup(urlServer);
-			
+
 			// Attempt to send messages the specified number of times
 			for (int i = 0; i < numMessages; i++) {
 				MessageInfo message = new MessageInfo(numMessages, i);
-				iRMIserver.receiveMessage(message);
+				iRMIServer.receiveMessage(message);
 			}
 
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
-		} 
+		}
 
 
 	}

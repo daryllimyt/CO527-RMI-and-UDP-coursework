@@ -37,9 +37,18 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 			int count = 0;
 			for (int i = 0; i < totalMessages; i++) {
 				if (receivedMessages[i] != 1) {
-					
+					count++;
+					s += " " + (i+1) + ", ";
 				}
 			}
+			if (count == 0) s += "None";
+
+			System.out.println("Total messages sent:\t" + totalMessages);
+			System.out.println("Total messages received:\t" + (totalMessages - count);
+			System.out.println("Total messages lost:\t" + count);
+			System.out.println(str);
+			System.out.println("Running...");
+			
 
 		}
 	}
@@ -55,7 +64,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		}
 
 		// Instantiate the server class
-		try { 
+		try {
 			rmis = new RMIServer();
 		} catch (RemoteException e) {
 			System.out.println("Error instantiating server class");
@@ -69,7 +78,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
-		} 
+		}
 
 	}
 
