@@ -30,6 +30,7 @@ public class UDPClient {
 
 		try {
 			serverAddr = InetAddress.getByName(args[0]);
+			System.out.println(serverAddr.getHostName());
 		} catch (UnknownHostException e) {
 			System.out.println("Bad server address in UDPClient, " + args[0] + " caused an unknown host exception " + e);
 			System.exit(-1);
