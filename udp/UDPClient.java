@@ -36,6 +36,8 @@ public class UDPClient {
 			System.exit(-1);
 		}
 		recvPort = Integer.parseInt(args[1]);
+		System.out.println(recvPort);
+
 		countTo = Integer.parseInt(args[2]);
 
 
