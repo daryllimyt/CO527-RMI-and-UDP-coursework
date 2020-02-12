@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import common.MessageInfo;
 
@@ -22,7 +24,7 @@ public class RMIClient {
 			System.exit(-1);
 		}
 
-		String urlServer = new String("rmi://" + args[0] + "/RMIServer");
+		String urlServer = new String("Server");
 		int numMessages = Integer.parseInt(args[1]);
 
 		// Initialise Security Manager
@@ -30,11 +32,10 @@ public class RMIClient {
 			System.setSecurityManager(new SecurityManager());
 		}
 
-
-
 		try {
 			// Bind to RMIServer
-			iRMIServer = (RMIServerI) Naming.lookup(urlServer);
+			Registry registry = LocateRegistry.getRegistry(args[0], 1099);
+			iRMIServer = (RMIServerI) registry.lookup(urlServer);
 
 			// Attempt to send messages the specified number of times
 			for (int i = 0; i < numMessages; i++) {
@@ -46,7 +47,5 @@ public class RMIClient {
 			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
-
-
 	}
 }
